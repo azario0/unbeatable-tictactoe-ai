@@ -1,0 +1,45 @@
+<!-- templates/game.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Game On!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+
+        {% if game_message %}
+            <div class="message {{ 'success' if winner else ('error' if 'AI wins' in game_message else 'info') }}">
+                {{ game_message }}
+            </div>
+        {% endif %}
+
+        <h2>
+            You are: <span class="{{ player_symbol }}">{{ player_symbol }}</span> |
+            AI is: <span class="{{ ai_symbol }}">{{ ai_symbol }}</span>
+        </h2>
+
+        <div class="board">
+            {% for i in range(9) %}
+                {% if board[i] == ' ' and not game_over and turn == 'player' %}
+                    <a href="{{ url_for('player_move', cell_index=i) }}" class="cell">{{ board[i] }}</a>
+                {% else %}
+                    <div class="cell occupied {{ board[i] }}">{{ board[i] }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if not game_over and turn == 'player' %}
+            <p class="message info">Your turn ({{ player_symbol }}). Click an empty cell.</p>
+        {% elif not game_over and turn == 'ai' %}
+            <p class="message info">AI is thinking...</p>
+            <!-- Auto-refresh or button for AI's turn (handled by redirect in Flask) -->
+        {% endif %}
+
+        <a href="{{ url_for('reset_game') }}" class="button secondary">Play Again / Reset</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!-- templates/start.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Choose Symbol</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+        <h2>Choose Your Symbol</h2>
+        <form method="POST" action="{{ url_for('start_game') }}" class="start-form">
+            <label for="player_symbol">Play as:</label>
+            <select name="player_symbol" id="player_symbol">
+                <option value="X">X (Go First)</option>
+                <option value="O">O (AI Goes First)</option>
+            </select>
+            <br>
+            <input type="submit" value="Start Game">
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
